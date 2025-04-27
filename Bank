@@ -1,0 +1,57 @@
+def deposit(balance, amount):
+    return balance + amount
+
+def withdrawal(balance, amount):
+    if balance >= amount:
+        return balance - amount
+    else:
+        print(f"Insufficient balance to withdraw {amount}. Current balance: {balance}")
+        return balance
+
+def string_to_int(s):
+    number = 0
+    for char in s:
+        if '0' <= char <= '9':
+            number = number * 10 + (ord(char) - ord('0'))
+    return number
+
+def process_transaction(transaction_log):
+    balance = 0
+    transaction = ""
+    i = 0
+    length = 0
+    for _ in transaction_log:
+        length += 1
+
+    while i <= length:
+        if i == length or transaction_log[i] == ',':
+            transaction = transaction.strip()
+            if transaction:
+                action = transaction[0]
+                amount_str = transaction[1:].strip()
+                amount = string_to_int(amount_str)
+                if action == 'D':
+                    balance = deposit(balance, amount)
+                elif action == 'W':
+                    balance = withdrawal(balance, amount)
+            transaction = ""
+        else:
+            transaction += transaction_log[i]
+        i += 1
+
+    return balance
+
+account_holder_name = input("Enter account holder's name: ")
+account_number = input("Enter account number: ")
+ifsc_code = input("Enter IFSC code: ")
+mobile_number = input("Enter mobile number: ")
+transaction_log = input("Enter transaction log: ")
+
+net_balance = process_transaction(transaction_log)
+
+print("\nAccount Details:")
+print(f"Account Holder's Name: {account_holder_name}")
+print(f"Account Number: {account_number}")
+print(f"IFSC Code: {ifsc_code}")
+print(f"Mobile Number: {mobile_number}")
+print(f"Net Balance: {net_balance}")
