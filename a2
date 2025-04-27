@@ -1,81 +1,118 @@
-def accept(num,marks):
+def accept(num, marks):
     for i in range(num):
         while True:
-            mrk = input("\nEnter marks %d: " % (i + 1))
+            mrk = input("\nEnter marks for student %d: " % (i + 1))
             if mrk == 'ab':
                 mrk = -1
                 break
-            mrk = int(mrk)
-            if 0 <= mrk <= 30:
-                break
-            else:
-                print("\nEnter valid input")
+            try:
+                mrk = int(mrk)
+                if 0 <= mrk <= 30:
+                    break
+                else:
+                    print("\nEnter valid input (0-30 or 'ab' for absent)")
+            except ValueError:
+                print("\nInvalid input. Enter a number or 'ab'")
         marks.append(mrk)
     return marks
         
-def avg_scr(n,b):
-	sum=0
-	for i in range(n):
-	 	if (b[i]!=-1):
-		 	sum+= b[i]
-	avg=sum/n
-	print("\navg is:-\t",avg)
+def avg_scr(n, b):
+    total = 0
+    count = 0
+    for i in range(n):
+        if b[i] != -1:
+            total += b[i]
+            count += 1
+    if count == 0:
+        print("\nNo student present to calculate average.")
+    else:
+        avg = total / count
+        print("\nAverage score is: ", avg)
 
-def high_scr(n,b):
-	max=0
-	for i in range(n):
-		if (b[i]!=-1):
-			if max<b[i]:
-				max=b[i]
-	print("\nhigh score:-\t",max)
-	return max
-	
-def low_scr(n,b):
-	min=31
-	for i in range(n):
-		if (b[i]!=-1):
-			if min>b[i]:
-				min=b[i]
-	print("\nlow score:-\t",min)
+def high_scr(n, b):
+    max_score = -1
+    for i in range(n):
+        if b[i] != -1 and b[i] > max_score:
+            max_score = b[i]
+    if max_score == -1:
+        print("\nNo scores available.")
+        return -1
+    else:
+        print("\nHighest score: ", max_score)
+        return max_score
+    
+def low_scr(n, b):
+    min_score = 31
+    for i in range(n):
+        if b[i] != -1 and b[i] < min_score:
+            min_score = b[i]
+    if min_score == 31:
+        print("\nNo scores available.")
+    else:
+        print("\nLowest score: ", min_score)
 
-def abst(n,b):
-	count=0
-	for i in range(n):
-		if (b[i]==-1):
-			count+=1
-	print("\nabsent no. of student:-\t ",count)
+def abst(n, b):
+    count = 0
+    for i in range(n):
+        if b[i] == -1:
+            count += 1
+    print("\nNumber of absent students: ", count)
 
-def h_freq(n,b):
-	count=0
-	c=high_scr(n,b)
-	for i in range(n):
-		if (b[i]!=-1):
-			if (b[i]==c):
-				count+=1
-	print("\n highest frequency is :-\t ",count)
+def h_freq(n, b):
+    c = high_scr(n, b)
+    if c == -1:
+        print("\nNo highest score to find frequency.")
+        return
+    count = 0
+    for i in range(n):
+        if b[i] == c:
+            count += 1
+    print("\nHighest score frequency: ", count)
 
 def main():
-	print("**********MENU**********")
-	print("\n1:avg score \n2:high score & low score\n3:absent no. of student \n4:highest frequency \n5:Exit")
-	while True:
-		choice = input("Enter your choice: ")
-		if choice == "0":
-		    marks = []
-		    num=int(input("\n enter the no of std:"))
-			
-		    accept(num,marks)
-		if choice == "1":
-		    avg_scr(num,marks)
-		if choice == "2":
-			high_scr(num,marks)
-			low_scr(num,marks)
-		if choice == "3":
-			abst(num,marks) 
-		if choice == "4": 
-			h_freq(num,marks)
-		if choice == "5": 
-			print("**********THANK YOU**********")
-			break	
+    marks = []
+    num = 0
+    while True:
+        print("\n********** MENU **********")
+        print("0: Enter student marks")
+        print("1: Average score")
+        print("2: High score & Low score")
+        print("3: Number of absent students")
+        print("4: Highest score frequency")
+        print("5: Exit")
+        
+        choice = input("\nEnter your choice: ")
+        
+        if choice == "0":
+            marks = []
+            num = int(input("\nEnter the number of students: "))
+            accept(num, marks)
+        elif choice == "1":
+            if num == 0:
+                print("\nPlease enter student marks first (Option 0).")
+            else:
+                avg_scr(num, marks)
+        elif choice == "2":
+            if num == 0:
+                print("\nPlease enter student marks first (Option 0).")
+            else:
+                high_scr(num, marks)
+                low_scr(num, marks)
+        elif choice == "3":
+            if num == 0:
+                print("\nPlease enter student marks first (Option 0).")
+            else:
+                abst(num, marks)
+        elif choice == "4":
+            if num == 0:
+                print("\nPlease enter student marks first (Option 0).")
+            else:
+                h_freq(num, marks)
+        elif choice == "5":
+            print("\n********** THANK YOU **********")
+            break
+        else:
+            print("\nInvalid choice. Please enter a valid option (0-5).")
 
 main()
 				
